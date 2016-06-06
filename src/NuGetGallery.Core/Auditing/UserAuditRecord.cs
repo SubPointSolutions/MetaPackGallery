@@ -1,12 +1,9 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace NuGetGallery.Auditing
 {
@@ -62,6 +59,8 @@ namespace NuGetGallery.Auditing
         public string Type { get; set; }
         public string Value { get; set; }
         public string Identity { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime? Expires { get; set; }
 
         public CredentialAuditRecord(Credential credential, bool removed)
         {
@@ -73,6 +72,9 @@ namespace NuGetGallery.Auditing
             {
                 Value = credential.Value;
             }
+
+            Created = credential.Created;
+            Expires = credential.Expires;
         }
     }
 

@@ -100,6 +100,13 @@ namespace NuGetGallery.Authentication
                     _trace.Information("No user matches credential of type: " + credential.Type);
                     return null;
                 }
+                
+                if (matched.HasExpired())
+                {
+                    // ReSharper disable once PossibleInvalidOperationException Already checked for null by using HasExpired()
+                    _trace.Verbose("Credential of type '" + matched.Type + "' for user '" + matched.User.Username + "' has expired on " + matched.Expires.Value.ToString("O"));
+                    return null;
+                }
 
                 _trace.Verbose("Successfully authenticated '" + matched.User.Username + "' with '" + matched.Type + "' credential");
                 return new AuthenticatedUser(matched.User, matched);
@@ -333,12 +340,14 @@ namespace NuGetGallery.Authentication
                 }
             }
 
-            return new CredentialViewModel()
+            return new CredentialViewModel
             {
                 Type = credential.Type,
                 TypeCaption = FormatCredentialType(credential.Type),
                 Identity = credential.Identity,
                 Value = kind == CredentialKind.Token ? credential.Value : String.Empty,
+                Created = credential.Created,
+                Expires = credential.Expires,
                 Kind = kind,
                 AuthUI = auther?.GetUI()
             };

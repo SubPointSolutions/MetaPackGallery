@@ -15,7 +15,8 @@ namespace NuGetGallery.Framework
     {
         public static readonly string Password = "p@ssw0rd!";
 
-        public static readonly User User = new User("testUser") {
+        public static readonly User User = new User("testUser")
+        {
             Key = 42,
             EmailAddress = "confirmed1@example.com",
             Credentials = new List<Credential>() {
@@ -33,12 +34,14 @@ namespace NuGetGallery.Framework
                 CredentialBuilder.CreateV1ApiKey(Guid.Parse("b9704a41-4107-4cd2-bcfa-70d84e021ab2"))
             }
         };
+
         public static readonly User Admin = new User("testAdmin") {
             Key = 43,
             EmailAddress = "confirmed3@example.com",
             Credentials = new List<Credential>() { CredentialBuilder.CreatePbkdf2Password(Password) },
             Roles = new List<Role>() { new Role() { Name = Constants.AdminRoleName } }
         };
+
         public static readonly User Owner = new User("testPackageOwner") {
             Key = 44,
             Credentials = new List<Credential>() { CredentialBuilder.CreatePbkdf2Password(Password) },
@@ -73,6 +76,7 @@ namespace NuGetGallery.Framework
                 authenticationType: "Test",
                 nameType: ClaimsIdentity.DefaultNameClaimType,
                 roleType: ClaimsIdentity.DefaultRoleClaimType);
+
             return new ClaimsPrincipal(identity);
         }
 

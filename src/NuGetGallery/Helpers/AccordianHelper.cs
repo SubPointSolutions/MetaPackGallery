@@ -10,6 +10,8 @@ namespace NuGetGallery.Helpers
 {
     public class AccordianHelper
     {
+        private readonly bool _expanded;
+
         public string Name { get; private set; }
         public string FormModelStatePrefix { get; private set; }
         public WebViewPage Page { get; private set; }
@@ -21,13 +23,15 @@ namespace NuGetGallery.Helpers
         {
             get
             {
-                return FormModelStatePrefix != null &&
-                    !Page.ViewData.ModelState.IsValidField(FormModelStatePrefix);
+                return _expanded
+                    || (FormModelStatePrefix != null && !Page.ViewData.ModelState.IsValidField(FormModelStatePrefix));
             }
         }
 
-        public AccordianHelper(string name, string formModelStatePrefix, WebViewPage page)
+        public AccordianHelper(string name, string formModelStatePrefix, bool expanded, WebViewPage page)
         {
+            _expanded = expanded;
+
             Name = name;
             FormModelStatePrefix = formModelStatePrefix;
             Page = page;

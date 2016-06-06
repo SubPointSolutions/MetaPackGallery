@@ -47,6 +47,8 @@ namespace NuGetGallery
         public static readonly string ReturnUrlParameterName = "ReturnUrl";
         public static readonly string CurrentUserOwinEnvironmentKey = "nuget.user";
 
+        public const int ExpirationInDaysForApiKeyV1 = 90;
+
         public static class ContentNames
         {
             public static readonly string Home = "Home";

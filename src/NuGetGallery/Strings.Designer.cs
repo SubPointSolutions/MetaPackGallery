@@ -70,7 +70,7 @@ namespace NuGetGallery {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified API key is invalid or does not have permission to access the specified package..
+        ///   Looks up a localized string similar to The specified API key is invalid, has expired, or does not have permission to access the specified package..
         /// </summary>
         public static string ApiKeyNotAuthorized {
             get {

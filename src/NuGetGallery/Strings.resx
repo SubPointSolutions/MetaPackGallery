@@ -136,7 +136,7 @@
     <value>A nuget package's {0} property may not be more than {1} characters long.</value>
   </data>
   <data name="ApiKeyNotAuthorized" xml:space="preserve">
-    <value>The specified API key is invalid or does not have permission to access the specified package.</value>
+    <value>The specified API key is invalid, has expired, or does not have permission to access the specified package.</value>
   </data>
   <data name="PackageExistsAndCannotBeModified" xml:space="preserve">
     <value>A package with id '{0}' and version '{1}' already exists and cannot be modified.</value>

@@ -1,9 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace NuGetGallery
 {
@@ -12,11 +10,6 @@ namespace NuGetGallery
     /// </summary>
     public static class CredentialBuilder
     {
-        public static Credential CreateV1ApiKey()
-        {
-            return CreateV1ApiKey(Guid.NewGuid());
-        }
-
         public static Credential CreateV1ApiKey(Guid apiKey)
         {
             return CreateV1ApiKey(apiKey.ToString());
@@ -38,7 +31,10 @@ namespace NuGetGallery
 
         internal static Credential CreateV1ApiKey(string apiKey)
         {
-            return new Credential(CredentialTypes.ApiKeyV1, apiKey.ToLowerInvariant());
+            return new Credential(
+                CredentialTypes.ApiKeyV1, 
+                apiKey.ToLowerInvariant(),
+                expiration: TimeSpan.FromDays(Constants.ExpirationInDaysForApiKeyV1));
         }
 
         internal static Credential CreateExternalCredential(string issuer, string value, string identity)

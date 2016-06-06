@@ -135,7 +135,8 @@ namespace NuGetGallery.Authentication
                 var service = Get<AuthenticationService>();
 
                 // Act
-                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey());
+                var result = service.Authenticate(
+                    CredentialBuilder.CreateV1ApiKey(Guid.NewGuid()));
 
                 // Assert
                 Assert.Null(result);
@@ -160,12 +161,30 @@ namespace NuGetGallery.Authentication
             }
 
             [Fact]
+            public void GivenExpiredMatchingApiKeyCredential_ItReturnsNull()
+            {
+                // Arrange
+                var service = Get<AuthenticationService>();
+                var cred = Fakes.User.Credentials.Single(
+                    c => String.Equals(c.Type, CredentialTypes.ApiKeyV1, StringComparison.OrdinalIgnoreCase));
+
+                cred.Expires = DateTime.UtcNow.AddDays(-1);
+
+                // Act
+                // Create a new credential to verify that it's a value-based lookup!
+                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value)));
+
+                // Assert
+                Assert.Null(result);
+            }
+
+            [Fact]
             public void GivenMultipleMatchingCredentials_ItThrows()
             {
                 // Arrange
                 var service = Get<AuthenticationService>();
                 var entities = Get<IEntitiesContext>();
-                var cred = CredentialBuilder.CreateV1ApiKey();
+                var cred = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid());
                 cred.Key = 42;
                 var creds = entities.Set<Credential>();
                 creds.Add(cred);
@@ -500,7 +519,9 @@ namespace NuGetGallery.Authentication
                     ar.AffectedCredential.Length == 1 &&
                     ar.AffectedCredential[0].Type == existingCred.Type &&
                     ar.AffectedCredential[0].Identity == existingCred.Identity &&
-                    ar.AffectedCredential[0].Value == existingCred.Value));
+                    ar.AffectedCredential[0].Value == existingCred.Value &&
+                    ar.AffectedCredential[0].Created == existingCred.Created &&
+                    ar.AffectedCredential[0].Expires == existingCred.Expires));
             }
 
             [Fact]
@@ -523,7 +544,9 @@ namespace NuGetGallery.Authentication
                     ar.AffectedCredential.Length == 1 &&
                     ar.AffectedCredential[0].Type == newCred.Type &&
                     ar.AffectedCredential[0].Identity == newCred.Identity &&
-                    ar.AffectedCredential[0].Value == null));
+                    ar.AffectedCredential[0].Value == null &&
+                    ar.AffectedCredential[0].Created == existingCred.Created &&
+                    ar.AffectedCredential[0].Expires == existingCred.Expires));
             }
         }
 
@@ -952,6 +975,9 @@ namespace NuGetGallery.Authentication
                 Assert.Equal(Strings.CredentialType_ApiKey, description.TypeCaption);
                 Assert.Null(description.Identity);
                 Assert.Equal(cred.Value, description.Value);
+                Assert.Equal(cred.Created, description.Created);
+                Assert.Equal(cred.Expires, description.Expires);
+                Assert.Equal(cred.HasExpired(), description.HasExpired());
                 Assert.Equal(CredentialKind.Token, description.Kind);
                 Assert.Null(description.AuthUI);
             }

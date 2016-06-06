@@ -38,7 +38,8 @@
     bool enabled = true,
     string formModelStatePrefix = null,
     Func<AccordianHelper, HelperResult> actions = null,
-    Func<AccordianHelper, HelperResult> content = null
+    Func<AccordianHelper, HelperResult> content = null,
+    bool expanded = false
 )
 {
     @* Calculate Accordian Index *@
@@ -48,7 +49,7 @@
     HttpContext.Current.Items[dataKey] = id;
     string name = groupName + "-" + id.ToString();
 
-    var hlp = new AccordianHelper(name, formModelStatePrefix, this);
+    var hlp = new AccordianHelper(name, formModelStatePrefix, expanded, this);
     <li id="@hlp.ItemId" class="accordian-item @(enabled ? "accordian-item-enabled" : "accordian-item-disabled")">
         @if (actions != null)
         {
@@ -67,7 +68,7 @@
         }
         @if (content != null)
         {
-            <div id="@hlp.ContentDropDownId" class="accordian-item-content @hlp.ContentHiddenClass">
+            <div id="@hlp.ContentDropDownId" class="accordian-item-content @(!expanded ? hlp.ContentHiddenClass : string.Empty)">
                 @content(hlp)
             </div>
         }
@@ -162,50 +163,50 @@
         title: (String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress) ? "Email Address" : "Pending Email Address"),
         subtitle: currentEmailAddress,
         enabled: String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress),
-        formModelStatePrefix: "ChangeEmail", 
+        formModelStatePrefix: "ChangeEmail",
         actions: @<text>@item.ExpandButton("Change", "Cancel")
-                  @if (!String.IsNullOrEmpty(CurrentUser.EmailAddress) && !String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress))
-                  {
-                      using (Html.BeginForm("CancelChangeEmail", "Users", FormMethod.Post, new { @class = "form-inline" }))
-                      {
-                        <fieldset class="form">
-                            <legend>Reset to Confirmed Email Address</legend>
-                            @Html.AntiForgeryToken()
-                            <button class="btn btn-inline" type="submit">Reset to Confirmed Email Address</button>
-                        </fieldset>
-                      }
-                  }
-                </text>,
+                     @if (!String.IsNullOrEmpty(CurrentUser.EmailAddress) && !String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress))
+                     {
+                         using (Html.BeginForm("CancelChangeEmail", "Users", FormMethod.Post, new {@class = "form-inline"}))
+                         {
+                             <fieldset class="form">
+                                 <legend>Reset to Confirmed Email Address</legend>
+                                 @Html.AntiForgeryToken()
+                                 <button class="btn btn-inline" type="submit">Reset to Confirmed Email Address</button>
+                             </fieldset>
+                         }
+                     }
+                  </text>,
         content: @<text>
-            @using (Html.BeginForm("ChangeEmail", "Users", FormMethod.Post, new { @class = "form-inline" }))
-            {
-                <fieldset class="form">
-                    <legend>Change Email Address</legend>
+                     @using (Html.BeginForm("ChangeEmail", "Users", FormMethod.Post, new {@class = "form-inline"}))
+                     {
+                         <fieldset class="form">
+                             <legend>Change Email Address</legend>
 
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummaryFor("ChangeEmail")
+                             @Html.AntiForgeryToken()
+                             @Html.ValidationSummaryFor("ChangeEmail")
 
-                    <div class="form-field">
-                        @Html.LabelFor(m => m.ChangeEmail.NewEmail)
-                        @Html.TextBoxFor(m => m.ChangeEmail.NewEmail)
-                        @Html.ValidationMessageFor(m => m.ChangeEmail.NewEmail)
-                    </div>
+                             <div class="form-field">
+                                 @Html.LabelFor(m => m.ChangeEmail.NewEmail)
+                                 @Html.TextBoxFor(m => m.ChangeEmail.NewEmail)
+                                 @Html.ValidationMessageFor(m => m.ChangeEmail.NewEmail)
+                             </div>
 
-                    @if (hasPassword)
-                    {
-                        <div class="form-field">
-                            @Html.LabelFor(m => m.ChangeEmail.Password)
-                            @Html.PasswordFor(m => m.ChangeEmail.Password)
-                            @Html.ValidationMessageFor(m => m.ChangeEmail.Password)
-                        </div>
-                    }
+                             @if (hasPassword)
+                             {
+                                 <div class="form-field">
+                                     @Html.LabelFor(m => m.ChangeEmail.Password)
+                                     @Html.PasswordFor(m => m.ChangeEmail.Password)
+                                     @Html.ValidationMessageFor(m => m.ChangeEmail.Password)
+                                 </div>
+                             }
 
-                    <img src="@Url.Content("~/Content/images/required.png")" alt="Blue border on left means required." />
+                             <img src="@Url.Content("~/Content/images/required.png")" alt="Blue border on left means required."/>
 
-                    <input type="submit" value="Save" title="Change email address" />
-                </fieldset>
-            }
-        </text>)
+                             <input type="submit" value="Save" title="Change email address"/>
+                         </fieldset>
+                     }
+                  </text>)
 
     @**************************
         Email Notifications
@@ -215,42 +216,42 @@
         title: "Email Notifications",
         enabled: true,
         actions: @<text>
-            @(CurrentUser.EmailAllowed ? "Users can contact you" : "Users can not contact you")
-            | @(CurrentUser.NotifyPackagePushed ? "Receiving package push notifications" : "Not receiving package push notifications")
-            @item.ExpandButton("Change", "Cancel")
-        </text>,
+                     @(CurrentUser.EmailAllowed ? "Users can contact you" : "Users can not contact you")
+                     | @(CurrentUser.NotifyPackagePushed ? "Receiving package push notifications" : "Not receiving package push notifications")
+                     @item.ExpandButton("Change", "Cancel")
+                  </text>,
         content: @<text>
-            @using (Html.BeginRouteForm(routeName: RouteName.ChangeEmailSubscription, method: FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
-            {
-                <fieldset class="form">
-                    <legend>Update Email Notifications</legend>
-                    @Html.AntiForgeryToken()
-                    <div class="form-field">
-                        <input name="emailAllowed" id="CurrentUser_EmailAllowed" type="checkbox" checked="@(CurrentUser.EmailAllowed)" value="true">
-                        <label class="checkbox" for="CurrentUser_EmailAllowed">Users can contact me through the <em>Contact Owners form</em></label>
-                        <p class="smaller">
-                            This subscription allows other registered users of the site to contact you
-                            about packages that you own using the <em>Contact Owners</em> form, or to request
-                            that you become an owner of their package. Unsubscribing means users cannot contact you for these reasons.
-                        </p>
-                    </div>
-                    <div class="form-field">
-                        <input name="notifyPackagePushed" id="CurrentUser_NotifyPackagePushed" type="checkbox" checked="@(CurrentUser.NotifyPackagePushed)" value="true">
-                        <label class="checkbox" for="CurrentUser_NotifyPackagePushed">Notify me when a package is pushed to @Config.Current.Brand using my account</label>
-                        <p class="smaller">
-                            This subscription will send a notification whenever a package is pushed using your account.
-                            We recommend to enable this subscription so that you can inspect whether a package was pushed intentional or not.
-                            Unsubscribing means no notification will be sent on push.
-                        </p>
-                    </div>
-                    <input type="submit" value="Save" title="Save changes to email notifications" />
-                </fieldset>
-            }
+                     @using (Html.BeginRouteForm(routeName: RouteName.ChangeEmailSubscription, method: FormMethod.Post, htmlAttributes: new {@class = "form-inline"}))
+                     {
+                         <fieldset class="form">
+                             <legend>Update Email Notifications</legend>
+                             @Html.AntiForgeryToken()
+                             <div class="form-field">
+                                 <input name="emailAllowed" id="CurrentUser_EmailAllowed" type="checkbox" checked="@(CurrentUser.EmailAllowed)" value="true">
+                                 <label class="checkbox" for="CurrentUser_EmailAllowed">Users can contact me through the <em>Contact Owners form</em></label>
+                                 <p class="smaller">
+                                     This subscription allows other registered users of the site to contact you
+                                     about packages that you own using the <em>Contact Owners</em> form, or to request
+                                     that you become an owner of their package. Unsubscribing means users cannot contact you for these reasons.
+                                 </p>
+                             </div>
+                             <div class="form-field">
+                                 <input name="notifyPackagePushed" id="CurrentUser_NotifyPackagePushed" type="checkbox" checked="@(CurrentUser.NotifyPackagePushed)" value="true">
+                                 <label class="checkbox" for="CurrentUser_NotifyPackagePushed">Notify me when a package is pushed to @Config.Current.Brand using my account</label>
+                                 <p class="smaller">
+                                     This subscription will send a notification whenever a package is pushed using your account.
+                                     We recommend to enable this subscription so that you can inspect whether a package was pushed intentional or not.
+                                     Unsubscribing means no notification will be sent on push.
+                                 </p>
+                             </div>
+                             <input type="submit" value="Save" title="Save changes to email notifications"/>
+                         </fieldset>
+                     }
 
-            <p>
-                <br /> <strong>Note:</strong> We will <em>always</em> send important account management and security notices.
-            </p>
-            </text>)
+                     <p>
+                         <br/> <strong>Note:</strong> We will <em>always</em> send important account management and security notices.
+                     </p>
+                  </text>)
 
     @**************************
         Profile Picture
@@ -258,25 +259,26 @@
     @AccordianBar(
         groupName: "editprofile",
         title: @<text>
-            Profile Picture
-            @if(!String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress)) {
-                @:(preview)
-            }
-        </text>,
+                   Profile Picture
+                   @if (!String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress))
+                   {
+                       @:(preview)
+                   }
+                </text>,
         subtitle: @<text>@ViewHelpers.GravatarImage(currentEmailAddress, CurrentUser.Username, 32)</text>,
         actions: @<text>@item.ExpandLink("More Info", "Less Info")</text>,
         content: @<text>
-            @if (!String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress))
-            {
-                <text>This is a preview of how your profile picture will look once you have verified your
-                    current email address. </text>
-            }
-            We use your verified email address and
-            <a href="http://www.gravatar.com" target="_blank">gravatar.com</a>
-            to get your profile picture.
-            <a href="http://gravatar.com" target="_blank">Go to gravatar.com</a>
-            to change your profile picture.
-        </text>    )
+                     @if (!String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress))
+                     {
+                         <text>This is a preview of how your profile picture will look once you have verified your
+                             current email address. </text>
+                     }
+                     We use your verified email address and
+                     <a href="http://www.gravatar.com" target="_blank">gravatar.com</a>
+                     to get your profile picture.
+                     <a href="http://gravatar.com" target="_blank">Go to gravatar.com</a>
+                     to change your profile picture.
+                  </text>)
 
     @**************************
         Curated Feeds
@@ -286,17 +288,18 @@
         foreach (var curatedFeed in Model.CuratedFeeds)
         {
             @AccordianBar(
-                    groupName: "editprofile",
-                    title: "Curated Feed",
-                    subtitle: curatedFeed,
-                    actions: @<text>
-                        <a class="btn btn-inline" href="@Url.RouteUrl(RouteName.CuratedFeed, new { name = curatedFeed })">
-                            Manage
-                        </a>
-                    </text>)
+                groupName: "editprofile",
+                title: "Curated Feed",
+                subtitle: curatedFeed,
+                actions: @<text>
+                             <a class="btn btn-inline" href="@Url.RouteUrl(RouteName.CuratedFeed, new {name = curatedFeed})">
+                                 Manage
+                             </a>
+                          </text>)
         }
     }
 </ul>
+
 <h2>Credentials</h2>
 @if (hasPassword && credGroups.ContainsKey(CredentialKind.External) && credGroups[CredentialKind.External].Any())
 {
@@ -407,78 +410,117 @@
     **************************@
     @AccordianBar(
         groupName: "editprofile",
-        title: @<text>
-            API Key:
+        title: @<text>API Key</text>,
+        enabled: CurrentUser.Confirmed,
+        expanded: (
+            // auto-expand when we just generated a new key
+            (TempData["Message"] != null && TempData["Message"].ToString().Equals(Strings.ApiKeyReset, StringComparison.OrdinalIgnoreCase))
+
+            // or when the API key has expired
+            || (apiKey != null && apiKey.HasExpired())
+        ),
+        actions: @<text>
+                @if (!CurrentUser.Confirmed)
+                {
+                    <text>You need to <a href="@Url.ConfirmationRequired()">confirm your account</a> before viewing your API Key</text>
+                }
+                else
+                {
+                    if (apiKey == null)
+                    {
+                        <text>You don't have an API key yet.</text>
+                    }
+                    else if (apiKey.HasExpired())
+                    {
+                        <span class="apiKeyExpired">Your API key has expired</span>
+                    }
+                    else
+                    {
+                        <text>(hidden for security purposes)</text>
+                    }
+
+                    @item.ExpandLink("Show details", "Hide details")
+                }
+            </text>,
+        content: @<text>
+            <p>
+                An API key provides you with a token that can identify you to @(Config.Current.Brand). The
+                <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet command-line utility</a> allows you to
+                submit a NuGet package to the gallery using your API key to authenticate.
+            </p>
+
             @if (!CurrentUser.Confirmed)
             {
-                <text>You need to
-                    <a href="@Url.ConfirmationRequired()">confirm your account</a> before viewing your API Key</text>
+                <p>
+                    To get an API Key you will need to <a href="@Url.ConfirmationRequired()">confirm your account.</a>
+                </p>
             }
-            else if (apiKey == null)
-            {
-                <text>You don't have an API key</text>
-            }
-            else
-            {
-                <span id="key">@apiKey.Value</span>
-                <button class="btn btn-small" title="Copy to clipboard" type="button" onclick="copyTextToClipboard('@apiKey.Value')"><i class="icon-copy"></i></button>
-            }
-        </text>,
-        actions: @<text>
-            @item.ExpandLink("More Info", "Less Info")
+
             @if (CurrentUser.Confirmed)
             {
+                if (apiKey == null)
+                {
+                    <p>
+                        <strong>You don't have an API key yet.</strong> Use the button below to generate an API key and start publishing packages to @(Config.Current.Brand).
+                    </p>
+                }
+                else if (apiKey.HasExpired())
+                {
+                    <p>
+                        <strong>Your API key has expired</strong> and can no longer be used to publish packages to @(Config.Current.Brand). Use the button below to generate a new API key.
+                    </p>
+                }
+                else
+                {
+                    <h4>Your API key</h4>
+
+                    <p>
+                        <strong>Always keep your API key a secret!</strong> If your key is accidentally revealed, you can always regenerate it at any time.
+                    </p>
+
+                    <p>
+                        <span id="key" class="apiKey">
+                            @apiKey.Value
+
+                            <button class="btn btn-small" title="Copy to clipboard" type="button" onclick="copyTextToClipboard('@apiKey.Value')"><i class="icon-copy"></i></button>
+                        </span>
+
+                        @if (@apiKey.Expires.HasValue)
+                        {
+                            <text><br />Expires: <span class="s-localtime" data-utc="@apiKey.Expires.Value.ToJavaScriptUTC()">@apiKey.Expires.Value.ToNuGetShortDateString()</span></text>
+                        }
+                    </p>
+                }
+
                 using (Html.BeginForm("GenerateApiKey", "Users", FormMethod.Post, new { @class = "form-inline" }))
                 {
                     <fieldset class="form">
                         <legend>@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</legend>
                         @Html.AntiForgeryToken()
-                        <button class="btn btn-inline" type="submit">@(apiKey == null ? "Generate" : "Reset")</button>
+                        <button class="btn btn-inline" type="submit">@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</button>
                     </fieldset>
                 }
-            }
-        </text>,
-        content: @<text>
-            @if (!CurrentUser.Confirmed)
-            {
-                <p>
-                    Your API key provides you with a token that can identify you to the gallery. The
-                    <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet</a> command-line utility allows you to
-                    submit a NuGet package to the gallery using your API key to authenticate.
-                    To get an API Key you will need to <a href="@Url.ConfirmationRequired()">confirm your account.</a>
-                </p>
-            }
-            else if (apiKey == null)
-            {
-                <p>
-                    An API key provides you with a token that can identify you to the gallery. The
-                    <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet</a> command-line utility allows you to
-                    submit a NuGet package to the gallery using your API key to authenticate.
-                </p>
-            }
-            else
-            {
-                <p>
-                    Your API key provides you with a token that identifies you to the gallery.
-                    Keep this a secret. You can always regenerate your key at any time (invalidating
-                    previous keys) if your token is accidentally revealed. The
-                    <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet</a> command-line utility allows you to
-                    submit a NuGet package to the gallery, and you would pass your token like this:
-                </p>
 
-                <h4>Example usage:</h4>
-                <p>
-                    <div id="account-apikeysample">
-                        <div>
-                            nuget.exe setApiKey @apiKey.Value
+                if (apiKey != null && !apiKey.HasExpired())
+                {
+                    <h4>Example usage</h4>
+                    <p>
+                        The following snippet demonstrates how you can use the <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet</a>
+                        command-line utility allows you to submit a NuGet package to the gallery:
+                    </p>
+                    <p>
+                        <div id="account-apikeysample">
+                            <div>
+                                nuget.exe setApiKey @apiKey.Value
 
-                            <button class="btn btn-small" title="Copy to clipboard" type="button" onclick="copyTextToClipboard('nuget.exe setApiKey @apiKey.Value -Source https://www.nuget.org/api/v2/package')"><i class="icon-copy"></i></button>
+                                <button class="btn btn-small" title="Copy to clipboard" type="button" onclick="copyTextToClipboard('nuget.exe setApiKey @apiKey.Value -Source @(Config.Current.SiteRoot.TrimEnd('/'))/api/v2/package')"><i class="icon-copy"></i></button>
+                            </div>
+                            <div>nuget.exe push MyPackage.1.0.nupkg -Source @(Config.Current.SiteRoot.TrimEnd('/'))/api/v2/package</div>
                         </div>
-                        <div>nuget.exe push MyPackage.1.0.nupkg -Source https://www.nuget.org/api/v2/package</div>
-                    </div>
-                </p>
+                    </p>
+                }
             }
-                  </text>)
+            </text>)
 </ul> 
 
 
