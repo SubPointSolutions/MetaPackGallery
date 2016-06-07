@@ -104,7 +104,7 @@ namespace NuGetGallery.Authentication
                 if (matched.HasExpired())
                 {
                     // ReSharper disable once PossibleInvalidOperationException Already checked for null by using HasExpired()
-                    _trace.Verbose("Credential of type '" + matched.Type + "' for user '" + matched.User.Username + "' has expired on " + matched.Expires.Value.ToString("O"));
+                    _trace.Verbose("Credential of type '" + matched.Type + "' for user '" + matched.User.Username + "' has expired on " + matched.Expires.Value.ToString("O", CultureInfo.InvariantCulture));
                     return null;
                 }
 
