@@ -58,14 +58,17 @@ namespace NuGetGallery
         public CredentialKind Kind { get; set; }
         public AuthenticatorUI AuthUI { get; set; }
 
-        public bool HasExpired()
+        public bool HasExpired
         {
-            if (Expires.HasValue)
+            get
             {
-                return DateTime.UtcNow > Expires.Value;
-            }
+                if (Expires.HasValue)
+                {
+                    return DateTime.UtcNow > Expires.Value;
+                }
 
-            return false;
+                return false;
+            }
         }
     }
 

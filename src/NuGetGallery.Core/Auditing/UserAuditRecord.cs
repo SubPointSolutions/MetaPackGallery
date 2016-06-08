@@ -56,11 +56,11 @@ namespace NuGetGallery.Auditing
 
     public class CredentialAuditRecord
     {
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string Identity { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Expires { get; set; }
+        public string Type { get; private set; }
+        public string Value { get; private set; }
+        public string Identity { get; private set; }
+        public DateTime Created { get; private set; }
+        public DateTime? Expires { get; private set; }
 
         public CredentialAuditRecord(Credential credential, bool removed)
         {

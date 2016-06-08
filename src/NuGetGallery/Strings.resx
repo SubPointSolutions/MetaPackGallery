@@ -380,4 +380,7 @@ The {2} Team</value>
   <data name="AzureActiveDirectory_Caption" xml:space="preserve">
     <value>Azure Active Directory</value>
   </data>
+  <data name="ApiKeyCanNotBeDefaultGuid" xml:space="preserve">
+    <value>API key can not be the default Guid.</value>
+  </data>
 </root>

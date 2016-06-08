@@ -10,11 +10,22 @@ namespace NuGetGallery
     public class Credential
         : IEntity
     {
+        /// <summary>
+        /// Represents a credential used by NuGet Gallery. Can be an API key credential,
+        /// username/password or external credential like Microsoft Account or Azure Active Directory.
+        /// </summary>
         public Credential()
         {
             Created = DateTime.UtcNow;
         }
 
+
+        /// <summary>
+        /// Represents a credential used by NuGet Gallery. Can be an API key credential,
+        /// username/password or external credential like Microsoft Account or Azure Active Directory.
+        /// </summary>
+        /// <param name="type">Credential type. See <see cref="CredentialTypes"/></param>
+        /// <param name="value">Credential value</param>
         public Credential(string type, string value)
             : this()
         {
@@ -22,10 +33,20 @@ namespace NuGetGallery
             Value = value;
         }
 
-        public Credential(string type, string value, TimeSpan expiration)
+        /// <summary>
+        /// Represents a credential used by NuGet Gallery. Can be an API key credential,
+        /// username/password or external credential like Microsoft Account or Azure Active Directory.
+        /// </summary>
+        /// <param name="type">Credential type. See <see cref="CredentialTypes"/></param>
+        /// <param name="value">Credential value</param>
+        /// <param name="expiration">Optional expiration timespan for the credential.</param>
+        public Credential(string type, string value, TimeSpan? expiration)
             : this(type, value)
         {
-            Expires = DateTime.UtcNow.Add(expiration);
+            if (expiration.HasValue && expiration.Value > TimeSpan.Zero)
+            {
+                Expires = DateTime.UtcNow.Add(expiration.Value);
+            }
         }
 
         public int Key { get; set; }
@@ -51,14 +72,18 @@ namespace NuGetGallery
 
         public virtual User User { get; set; }
 
-        public bool HasExpired()
+        [NotMapped]
+        public bool HasExpired
         {
-            if (Expires.HasValue)
+            get
             {
-                return DateTime.UtcNow > Expires.Value;
-            }
+                if (Expires.HasValue)
+                {
+                    return DateTime.UtcNow > Expires.Value;
+                }
 
-            return false;
+                return false;
+            }
         }
     }
 }

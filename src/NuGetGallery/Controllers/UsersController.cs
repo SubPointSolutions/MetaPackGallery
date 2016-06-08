@@ -462,7 +462,8 @@ namespace NuGetGallery
 
             // Add/Replace the API Key credential, and save to the database
             TempData["Message"] = Strings.ApiKeyReset;
-            await AuthService.ReplaceCredential(user, CredentialBuilder.CreateV1ApiKey(apiKey));
+            await AuthService.ReplaceCredential(user, 
+                CredentialBuilder.CreateV1ApiKey(apiKey, TimeSpan.FromDays(Config.ExpirationInDaysForApiKeyV1)));
 
             return RedirectToAction("Account");
         }

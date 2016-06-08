@@ -408,17 +408,19 @@
     @**************************
         API Key
     **************************@
+    @{
+
+        // auto-expand when we just generated a new key
+        var shouldExpandApiKeyAccordeon = (TempData["Message"] != null && TempData["Message"].ToString().Equals(Strings.ApiKeyReset, StringComparison.OrdinalIgnoreCase));
+
+        // or when the API key has expired
+        shouldExpandApiKeyAccordeon = shouldExpandApiKeyAccordeon || (apiKey != null && apiKey.HasExpired);
+    }
     @AccordianBar(
         groupName: "editprofile",
         title: @<text>API Key</text>,
         enabled: CurrentUser.Confirmed,
-        expanded: (
-            // auto-expand when we just generated a new key
-            (TempData["Message"] != null && TempData["Message"].ToString().Equals(Strings.ApiKeyReset, StringComparison.OrdinalIgnoreCase))
-
-            // or when the API key has expired
-            || (apiKey != null && apiKey.HasExpired())
-        ),
+        expanded: shouldExpandApiKeyAccordeon,
         actions: @<text>
                 @if (!CurrentUser.Confirmed)
                 {
@@ -430,7 +432,7 @@
                     {
                         <text>You don't have an API key yet.</text>
                     }
-                    else if (apiKey.HasExpired())
+                    else if (apiKey.HasExpired)
                     {
                         <span class="apiKeyExpired">Your API key has expired</span>
                     }
@@ -464,7 +466,7 @@
                         <strong>You don't have an API key yet.</strong> Use the button below to generate an API key and start publishing packages to @(Config.Current.Brand).
                     </p>
                 }
-                else if (apiKey.HasExpired())
+                else if (apiKey.HasExpired)
                 {
                     <p>
                         <strong>Your API key has expired</strong> and can no longer be used to publish packages to @(Config.Current.Brand). Use the button below to generate a new API key.
@@ -501,7 +503,7 @@
                     </fieldset>
                 }
 
-                if (apiKey != null && !apiKey.HasExpired())
+                if (apiKey != null && !apiKey.HasExpired)
                 {
                     <h4>Example usage</h4>
                     <p>

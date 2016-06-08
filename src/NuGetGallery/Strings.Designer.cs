@@ -70,6 +70,15 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API key can not be the default Guid..
+        /// </summary>
+        public static string ApiKeyCanNotBeDefaultGuid {
+            get {
+                return ResourceManager.GetString("ApiKeyCanNotBeDefaultGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified API key is invalid, has expired, or does not have permission to access the specified package..
         /// </summary>
         public static string ApiKeyNotAuthorized {

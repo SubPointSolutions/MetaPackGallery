@@ -98,17 +98,19 @@ namespace NuGetGallery.Authentication
                 if (matched == null)
                 {
                     _trace.Information("No user matches credential of type: " + credential.Type);
+
                     return null;
                 }
                 
-                if (matched.HasExpired())
+                if (matched.HasExpired)
                 {
-                    // ReSharper disable once PossibleInvalidOperationException Already checked for null by using HasExpired()
                     _trace.Verbose("Credential of type '" + matched.Type + "' for user '" + matched.User.Username + "' has expired on " + matched.Expires.Value.ToString("O", CultureInfo.InvariantCulture));
+
                     return null;
                 }
 
                 _trace.Verbose("Successfully authenticated '" + matched.User.Username + "' with '" + matched.Type + "' credential");
+
                 return new AuthenticatedUser(matched.User, matched);
             }
         }
@@ -155,7 +157,7 @@ namespace NuGetGallery.Authentication
             };
 
             // Add a credential for the password and the API Key
-            newUser.Credentials.Add(CredentialBuilder.CreateV1ApiKey(apiKey));
+            newUser.Credentials.Add(CredentialBuilder.CreateV1ApiKey(apiKey, TimeSpan.FromDays(_config.ExpirationInDaysForApiKeyV1)));
             newUser.Credentials.Add(credential);
 
             if (!_config.ConfirmEmailAddresses)

@@ -136,7 +136,7 @@ namespace NuGetGallery.Authentication
 
                 // Act
                 var result = service.Authenticate(
-                    CredentialBuilder.CreateV1ApiKey(Guid.NewGuid()));
+                    CredentialBuilder.CreateV1ApiKey(Guid.NewGuid(), Fakes.ExpirationForApiKeyV1));
 
                 // Assert
                 Assert.Null(result);
@@ -152,7 +152,7 @@ namespace NuGetGallery.Authentication
 
                 // Act
                 // Create a new credential to verify that it's a value-based lookup!
-                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value)));
+                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value), Fakes.ExpirationForApiKeyV1));
 
                 // Assert
                 Assert.NotNull(result);
@@ -172,7 +172,7 @@ namespace NuGetGallery.Authentication
 
                 // Act
                 // Create a new credential to verify that it's a value-based lookup!
-                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value)));
+                var result = service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value), Fakes.ExpirationForApiKeyV1));
 
                 // Assert
                 Assert.Null(result);
@@ -184,14 +184,15 @@ namespace NuGetGallery.Authentication
                 // Arrange
                 var service = Get<AuthenticationService>();
                 var entities = Get<IEntitiesContext>();
-                var cred = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid());
+                var cred = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid(), Fakes.ExpirationForApiKeyV1);
                 cred.Key = 42;
                 var creds = entities.Set<Credential>();
                 creds.Add(cred);
-                creds.Add(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value)));
+                creds.Add(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value), Fakes.ExpirationForApiKeyV1));
 
                 // Act
-                var ex = Assert.Throws<InvalidOperationException>(() => service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value))));
+                var ex = Assert.Throws<InvalidOperationException>(() => 
+                    service.Authenticate(CredentialBuilder.CreateV1ApiKey(Guid.Parse(cred.Value), Fakes.ExpirationForApiKeyV1)));
 
                 // Assert
                 Assert.Equal(String.Format(
@@ -964,7 +965,7 @@ namespace NuGetGallery.Authentication
             public void GivenATokenCredential_ItDescribesItCorrectly()
             {
                 // Arrange
-                var cred = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid());
+                var cred = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid(), Fakes.ExpirationForApiKeyV1);
                 var authService = Get<AuthenticationService>();
 
                 // Act
@@ -977,7 +978,7 @@ namespace NuGetGallery.Authentication
                 Assert.Equal(cred.Value, description.Value);
                 Assert.Equal(cred.Created, description.Created);
                 Assert.Equal(cred.Expires, description.Expires);
-                Assert.Equal(cred.HasExpired(), description.HasExpired());
+                Assert.Equal(cred.HasExpired, description.HasExpired);
                 Assert.Equal(CredentialKind.Token, description.Kind);
                 Assert.Null(description.AuthUI);
             }

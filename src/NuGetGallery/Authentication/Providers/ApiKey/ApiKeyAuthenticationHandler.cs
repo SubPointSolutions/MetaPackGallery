@@ -75,7 +75,7 @@ namespace NuGetGallery.Authentication.Providers.ApiKey
             if (!String.IsNullOrEmpty(apiKey))
             {
                 // Get the user
-                var authUser = Auth.Authenticate(CredentialBuilder.CreateV1ApiKey(apiKey));
+                var authUser = Auth.Authenticate(CredentialBuilder.CreateV1ApiKey(apiKey, TimeSpan.Zero));
                 if (authUser != null)
                 {
                     // Set the current user

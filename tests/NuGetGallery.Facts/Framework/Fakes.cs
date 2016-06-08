@@ -13,6 +13,8 @@ namespace NuGetGallery.Framework
 {
     public static class Fakes
     {
+        public static TimeSpan ExpirationForApiKeyV1 =  TimeSpan.FromDays(90);
+
         public static readonly string Password = "p@ssw0rd!";
 
         public static readonly User User = new User("testUser")
@@ -21,7 +23,7 @@ namespace NuGetGallery.Framework
             EmailAddress = "confirmed1@example.com",
             Credentials = new List<Credential>() {
                 CredentialBuilder.CreatePbkdf2Password(Password),
-                CredentialBuilder.CreateV1ApiKey(Guid.Parse("519e180e-335c-491a-ac26-e83c4bd31d65"))
+                CredentialBuilder.CreateV1ApiKey(Guid.Parse("519e180e-335c-491a-ac26-e83c4bd31d65"), ExpirationForApiKeyV1)
             }
         };
 
@@ -31,7 +33,7 @@ namespace NuGetGallery.Framework
             EmailAddress = "confirmed2@example.com",
             Credentials = new List<Credential>() {
                 CredentialBuilder.CreateSha1Password(Password),
-                CredentialBuilder.CreateV1ApiKey(Guid.Parse("b9704a41-4107-4cd2-bcfa-70d84e021ab2"))
+                CredentialBuilder.CreateV1ApiKey(Guid.Parse("b9704a41-4107-4cd2-bcfa-70d84e021ab2"), ExpirationForApiKeyV1)
             }
         };
 

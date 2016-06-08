@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using NuGetGallery.Configuration;
 
 namespace NuGetGallery
 {
@@ -10,9 +11,11 @@ namespace NuGetGallery
     /// </summary>
     public static class CredentialBuilder
     {
-        public static Credential CreateV1ApiKey(Guid apiKey)
+        private static readonly string DefaultGuidString = new Guid().ToString();
+
+        public static Credential CreateV1ApiKey(Guid apiKey, TimeSpan? expiration)
         {
-            return CreateV1ApiKey(apiKey.ToString());
+            return CreateV1ApiKey(apiKey.ToString(), expiration);
         }
 
         public static Credential CreatePbkdf2Password(string plaintextPassword)
@@ -29,12 +32,17 @@ namespace NuGetGallery
                 CryptographyService.GenerateSaltedHash(plaintextPassword, Constants.Sha1HashAlgorithmId));
         }
 
-        internal static Credential CreateV1ApiKey(string apiKey)
+        internal static Credential CreateV1ApiKey(string apiKey, TimeSpan? expiration)
         {
+            if (apiKey == DefaultGuidString)
+            {
+                throw new ArgumentException(Strings.ApiKeyCanNotBeDefaultGuid, nameof(apiKey));
+            }
+
             return new Credential(
                 CredentialTypes.ApiKeyV1, 
                 apiKey.ToLowerInvariant(),
-                expiration: TimeSpan.FromDays(Constants.ExpirationInDaysForApiKeyV1));
+                expiration: expiration);
         }
 
         internal static Credential CreateExternalCredential(string issuer, string value, string identity)
