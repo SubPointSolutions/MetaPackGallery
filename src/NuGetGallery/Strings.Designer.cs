@@ -816,6 +816,24 @@ namespace NuGetGallery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your API key expires in {0} days. Visit {1} to regenerate your API key..
+        /// </summary>
+        public static string WarningApiKeyAboutToExpire {
+            get {
+                return ResourceManager.GetString("WarningApiKeyAboutToExpire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your API key has expired. Visit {0} to generate a new API key..
+        /// </summary>
+        public static string WarningApiKeyExpired {
+            get {
+                return ResourceManager.GetString("WarningApiKeyExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string Yes {

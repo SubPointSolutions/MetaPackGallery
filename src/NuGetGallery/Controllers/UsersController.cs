@@ -399,6 +399,7 @@ namespace NuGetGallery
             {
                 // User is requesting a password set email
                 await AuthService.GeneratePasswordResetToken(user, Constants.DefaultPasswordResetTokenExpirationHours * 60);
+
                 return SendPasswordResetEmail(user, forgotPassword: false);
             }
             else

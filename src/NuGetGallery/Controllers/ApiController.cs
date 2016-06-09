@@ -38,7 +38,7 @@ namespace NuGetGallery
         public IAutomaticallyCuratePackageCommand AutoCuratePackage { get; set; }
         public IStatusService StatusService { get; set; }
         public IMessageService MessageService { get; set; }
-        public ConfigurationService ConfigurationService{ get; set; }
+        public ConfigurationService ConfigurationService { get; set; }
 
         protected ApiController()
         {
@@ -112,6 +112,7 @@ namespace NuGetGallery
                 {
                     return new HttpStatusCodeWithBodyResult(HttpStatusCode.BadRequest, "The package version is not a valid semantic version");
                 }
+
                 // Normalize the version
                 version = NuGetVersionNormalizer.Normalize(version);
             }
