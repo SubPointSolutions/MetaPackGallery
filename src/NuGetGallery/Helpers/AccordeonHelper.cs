@@ -1,14 +1,12 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Web;
 using System.Web.Mvc;
 
 namespace NuGetGallery.Helpers
 {
-    public class AccordianHelper
+    public class AccordeonHelper
     {
         private readonly bool _expanded;
 
@@ -28,7 +26,7 @@ namespace NuGetGallery.Helpers
             }
         }
 
-        public AccordianHelper(string name, string formModelStatePrefix, bool expanded, WebViewPage page)
+        public AccordeonHelper(string name, string formModelStatePrefix, bool expanded, WebViewPage page)
         {
             _expanded = expanded;
 
@@ -40,7 +38,7 @@ namespace NuGetGallery.Helpers
         public HtmlString ExpandButton(string closedTitle, string expandedTitle)
         {
             return new HtmlString(
-                "<a href=\"#\" class=\"accordian-expand-button btn btn-inline s-expand\" data-target=\"#" +
+                "<a href=\"#\" class=\"accordeon-expand-button btn btn-inline s-expand\" data-target=\"#" +
                 ContentDropDownId +
                 "\" data-toggletext=\"" +
                 (Expanded ? closedTitle : expandedTitle) +
@@ -52,7 +50,7 @@ namespace NuGetGallery.Helpers
         public HtmlString ExpandLink(string closedTitle, string expandedTitle)
         {
             return new HtmlString(
-                "<a href=\"#\" class=\"accordian-expand-link s-expand\" data-target=\"#" +
+                "<a href=\"#\" class=\"accordeon-expand-link s-expand\" data-target=\"#" +
                 ContentDropDownId +
                 "\" data-toggletext=\"" +
                 (Expanded ? closedTitle : expandedTitle) +

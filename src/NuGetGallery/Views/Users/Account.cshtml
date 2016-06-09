@@ -1,28 +1,28 @@
 ﻿@model AccountViewModel
 
-@helper AccordianBar(
+@helper AccordeonBar(
     string groupName,
     string title,
     string subtitle = null,
     bool enabled = true,
     string formModelStatePrefix = null,
-    Func<AccordianHelper, HelperResult> actions = null,
-    Func<AccordianHelper, HelperResult> content = null
+    Func<AccordeonHelper, HelperResult> actions = null,
+    Func<AccordeonHelper, HelperResult> content = null
 )
 {
-    Func<AccordianHelper, HelperResult> titleTemplate = null;
+    Func<AccordeonHelper, HelperResult> titleTemplate = null;
     if (!String.IsNullOrEmpty(title))
     {
-        titleTemplate = new Func<AccordianHelper, HelperResult>(@<text>@title</text>);
+        titleTemplate = new Func<AccordeonHelper, HelperResult>(@<text>@title</text>);
     }
 
-    Func<AccordianHelper, HelperResult> subtitleTemplate = null;
+    Func<AccordeonHelper, HelperResult> subtitleTemplate = null;
     if (!String.IsNullOrEmpty(subtitle))
     {
-        subtitleTemplate = new Func<AccordianHelper, HelperResult>(@<text>@subtitle</text>);
+        subtitleTemplate = new Func<AccordeonHelper, HelperResult>(@<text>@subtitle</text>);
     }
 
-    @AccordianBar(groupName,
+    @AccordeonBar(groupName,
         titleTemplate,
         subtitleTemplate,
         enabled,
@@ -31,44 +31,44 @@
         content)
 }
 
-@helper AccordianBar(
+@helper AccordeonBar(
     string groupName,
-    Func<AccordianHelper, HelperResult> title,
-    Func<AccordianHelper, HelperResult> subtitle = null,
+    Func<AccordeonHelper, HelperResult> title,
+    Func<AccordeonHelper, HelperResult> subtitle = null,
     bool enabled = true,
     string formModelStatePrefix = null,
-    Func<AccordianHelper, HelperResult> actions = null,
-    Func<AccordianHelper, HelperResult> content = null,
+    Func<AccordeonHelper, HelperResult> actions = null,
+    Func<AccordeonHelper, HelperResult> content = null,
     bool expanded = false
 )
 {
-    @* Calculate Accordian Index *@
-    string dataKey = "___AccordianCounter_" + groupName;
+    @* Calculate Accordeon Index *@
+    string dataKey = "___AccordeonCounter_" + groupName;
     int lastId = (int)(HttpContext.Current.Items[dataKey] ?? 0);
     int id = lastId + 1;
     HttpContext.Current.Items[dataKey] = id;
     string name = groupName + "-" + id.ToString();
 
-    var hlp = new AccordianHelper(name, formModelStatePrefix, expanded, this);
-    <li id="@hlp.ItemId" class="accordian-item @(enabled ? "accordian-item-enabled" : "accordian-item-disabled")">
+    var hlp = new AccordeonHelper(name, formModelStatePrefix, expanded, this);
+    <li id="@hlp.ItemId" class="accordeon-item @(enabled ? "accordeon-item-enabled" : "accordeon-item-disabled")">
         @if (actions != null)
         {
-            <div class="accordian-item-actions">
+            <div class="accordeon-item-actions">
                 @actions(hlp)
             </div>
         }
-        <span class="accordian-item-title">
+        <span class="accordeon-item-title">
             @title(hlp)
         </span>
         @if (subtitle != null)
         {
-            <span class="accordian-item-subtitle">
+            <span class="accordeon-item-subtitle">
                 @subtitle(hlp)
             </span>
         }
         @if (content != null)
         {
-            <div id="@hlp.ContentDropDownId" class="accordian-item-content @(!expanded ? hlp.ContentHiddenClass : string.Empty)">
+            <div id="@hlp.ContentDropDownId" class="accordeon-item-content @(!expanded ? hlp.ContentHiddenClass : string.Empty)">
                 @content(hlp)
             </div>
         }
@@ -154,11 +154,11 @@
     </ul>
 </section>
 
-<ul id="account-accordian" class="accordian">
+<ul id="account-accordeon" class="accordeon">
     @**************************
             Email Address
     **************************@
-    @AccordianBar(
+    @AccordeonBar(
         groupName: "editprofile",
         title: (String.IsNullOrEmpty(CurrentUser.UnconfirmedEmailAddress) ? "Email Address" : "Pending Email Address"),
         subtitle: currentEmailAddress,
@@ -211,7 +211,7 @@
     @**************************
         Email Notifications
     **************************@
-    @AccordianBar(
+    @AccordeonBar(
         groupName: "editprofile",
         title: "Email Notifications",
         enabled: true,
@@ -256,7 +256,7 @@
     @**************************
         Profile Picture
     **************************@
-    @AccordianBar(
+    @AccordeonBar(
         groupName: "editprofile",
         title: @<text>
                    Profile Picture
@@ -287,7 +287,7 @@
     {
         foreach (var curatedFeed in Model.CuratedFeeds)
         {
-            @AccordianBar(
+            @AccordeonBar(
                 groupName: "editprofile",
                 title: "Curated Feed",
                 subtitle: curatedFeed,
@@ -309,7 +309,7 @@
     </p>
 }
     
-<ul class="accordian">
+<ul class="accordeon">
     @**************************
         External Credentials
     **************************@
@@ -317,7 +317,7 @@
     {
         foreach (var cred in credGroups[CredentialKind.External])
         {
-            @AccordianBar(
+            @AccordeonBar(
                 groupName: "editprofile",
                 title: cred.TypeCaption,
                 subtitle: cred.Identity,
@@ -345,7 +345,7 @@
     @**************************
         Password
     **************************@
-    @AccordianBar(
+    @AccordeonBar(
         groupName: "editprofile",
         title: (hasPassword ? "Password Login" : "Password Login Disabled"),
         enabled: hasPassword,
@@ -416,7 +416,7 @@
         // or when the API key has expired
         shouldExpandApiKeyAccordeon = shouldExpandApiKeyAccordeon || (apiKey != null && apiKey.HasExpired);
     }
-    @AccordianBar(
+    @AccordeonBar(
         groupName: "editprofile",
         title: @<text>API Key</text>,
         enabled: CurrentUser.Confirmed,
