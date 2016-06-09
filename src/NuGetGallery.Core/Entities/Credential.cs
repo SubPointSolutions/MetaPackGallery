@@ -16,7 +16,6 @@ namespace NuGetGallery
         /// </summary>
         public Credential()
         {
-            Created = DateTime.UtcNow;
         }
 
 
