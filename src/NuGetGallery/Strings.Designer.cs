@@ -636,7 +636,7 @@ namespace NuGetGallery {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password has been changed.
+        ///   Looks up a localized string similar to Your password has been changed. Note that your API key has also been updated..
         /// </summary>
         public static string PasswordChanged {
             get {

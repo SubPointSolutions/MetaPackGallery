@@ -229,7 +229,7 @@
     <value>The external account has been removed</value>
   </data>
   <data name="PasswordChanged" xml:space="preserve">
-    <value>Your password has been changed</value>
+    <value>Your password has been changed. Note that your API key has also been updated.</value>
   </data>
   <data name="PasswordRemoved" xml:space="preserve">
     <value>Your password has been removed</value>

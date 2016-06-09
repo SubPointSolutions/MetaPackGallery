@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -37,14 +38,14 @@ namespace NuGetGallery.Filters
                         // expired warning
                         filterContext.HttpContext.Response.Headers.Add(
                             Constants.WarningHeaderName,
-                            string.Format(Strings.WarningApiKeyExpired, accountUrl));
+                            string.Format(CultureInfo.InvariantCulture, Strings.WarningApiKeyExpired, accountUrl));
                     }
                     else if (expirationPeriod.TotalDays <= controller.NuGetContext.Config.Current.WarnAboutExpirationInDaysForApiKeyV1)
                     {
                         // about to expire warning
                         filterContext.HttpContext.Response.Headers.Add(
                             Constants.WarningHeaderName,
-                            string.Format(Strings.WarningApiKeyAboutToExpire, expirationPeriod.TotalDays, accountUrl));
+                            string.Format(CultureInfo.InvariantCulture, Strings.WarningApiKeyAboutToExpire, expirationPeriod.TotalDays, accountUrl));
                     }
                 }
             }

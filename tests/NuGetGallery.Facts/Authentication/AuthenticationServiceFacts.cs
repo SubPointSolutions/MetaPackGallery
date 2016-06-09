@@ -816,11 +816,13 @@ namespace NuGetGallery.Authentication
             }
 
             [Fact]
-            public async Task GivenValidOldPassword_ItReturnsTrueAndReplacesPasswordCredential()
+            public async Task GivenValidOldPassword_ItReturnsTrueAndReplacesPasswordCredentialAndApiKeyV1Credential()
             {
                 // Arrange
                 var user = Fakes.CreateUser("test", CredentialBuilder.CreatePbkdf2Password(Fakes.Password));
                 var authService = Get<AuthenticationService>();
+                var oldApiKeyV1Credential = user.Credentials.FirstOrDefault(c =>
+                    String.Equals(c.Type, CredentialTypes.ApiKeyV1, StringComparison.OrdinalIgnoreCase));
 
                 // Act
                 bool result = await authService.ChangePassword(user, Fakes.Password, "new-password!");
@@ -830,6 +832,8 @@ namespace NuGetGallery.Authentication
 
                 Credential _;
                 Assert.True(AuthenticationService.ValidatePasswordCredential(user.Credentials, "new-password!", out _));
+                Assert.NotEqual(oldApiKeyV1Credential, user.Credentials.FirstOrDefault(c =>
+                    String.Equals(c.Type, CredentialTypes.ApiKeyV1, StringComparison.OrdinalIgnoreCase)));
             }
 
             [Fact]

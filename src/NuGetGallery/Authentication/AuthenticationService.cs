@@ -293,8 +293,14 @@ namespace NuGetGallery.Authentication
             }
 
             // Replace/Set password credential
-            var cred = CredentialBuilder.CreatePbkdf2Password(newPassword);
-            await ReplaceCredentialInternal(user, cred);
+            var passwordCredential = CredentialBuilder.CreatePbkdf2Password(newPassword);
+            await ReplaceCredentialInternal(user, passwordCredential);
+
+            // Expire existing API keys
+            var apiKeyCredential = CredentialBuilder.CreateV1ApiKey(Guid.NewGuid(), TimeSpan.FromDays(_config.ExpirationInDaysForApiKeyV1));
+            await ReplaceCredentialInternal(user, apiKeyCredential);
+
+            // Save changes
             await Entities.SaveChangesAsync();
             return true;
         }

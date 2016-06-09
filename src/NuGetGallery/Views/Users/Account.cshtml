@@ -384,6 +384,10 @@
                 <fieldset id="account-changepassword-fieldset" class="form">
                     <legend>Change Password Form</legend>
 
+                    <p>
+                        Using this form, you can change your password for @(Config.Current.Brand).
+                    </p>
+
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummaryFor("ChangePassword")
                     <div class="form-field">
@@ -398,7 +402,14 @@
                         @Html.ValidationMessageFor(m => m.ChangePassword.NewPassword)
                     </div>
 
-                    <img src="@Url.Content("~/Content/images/required.png")" alt="Blue border on left means required." />
+                    <img src="@Url.Content("~/Content/images/required.png")" alt="Blue border on left means required."/>
+                    
+                    @if (apiKey != null)
+                    {
+                        <p class="warning">
+                            <strong>Note:</strong> Changing your password will immediately expire your existing API key as well.
+                        </p>
+                    }
 
                     <input type="submit" value="Change" title="Change password" />
                 </fieldset>
