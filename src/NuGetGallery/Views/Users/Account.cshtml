@@ -488,7 +488,7 @@
                     <h4>Your API key</h4>
 
                     <p>
-                        <strong>Always keep your API key a secret!</strong> If your key is accidentally revealed, you can always regenerate it at any time.
+                        <strong>Always keep your API key a secret!</strong> If your key is accidentally revealed, you can always regenerate it at any time. You can also remove the API key if necessary.
                     </p>
 
                     <p>
@@ -512,6 +512,19 @@
                         @Html.AntiForgeryToken()
                         <button class="btn btn-inline" type="submit">@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</button>
                     </fieldset>
+                }
+
+                if (apiKey != null)
+                {
+                    using (Html.BeginForm("RemoveCredential", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                    {
+                        <fieldset class="form">
+                            <legend>Remove API key</legend>
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("credentialType", CredentialTypes.ApiKeyV1)
+                            <button class="btn btn-inline" type="submit">Remove API key</button>
+                        </fieldset>
+                    }
                 }
 
                 if (apiKey != null && !apiKey.HasExpired)

@@ -197,7 +197,7 @@ namespace NuGetGallery {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The external account has been removed.
+        ///   Looks up a localized string similar to The credential has been removed.
         /// </summary>
         public static string CredentialRemoved {
             get {

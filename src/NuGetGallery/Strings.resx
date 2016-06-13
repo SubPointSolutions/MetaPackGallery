@@ -226,7 +226,7 @@
     <value>Oops! You can't remove the only credential that can be used to log in to the website!</value>
   </data>
   <data name="CredentialRemoved" xml:space="preserve">
-    <value>The external account has been removed</value>
+    <value>The credential has been removed</value>
   </data>
   <data name="PasswordChanged" xml:space="preserve">
     <value>Your password has been changed. Note that your API key has also been updated.</value>
