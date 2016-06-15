@@ -484,9 +484,7 @@
                     </p>
                 }
                 else
-                {
-                    <h4>Your API key</h4>
-
+                { 
                     <p>
                         <strong>Always keep your API key a secret!</strong> If your key is accidentally revealed, you can always regenerate it at any time. You can also remove the API key if necessary.
                     </p>
@@ -498,37 +496,51 @@
                             <button class="btn btn-small" title="Copy to clipboard" type="button" onclick="copyTextToClipboard('@apiKey.Value')"><i class="icon-copy"></i></button>
                         </span>
 
-                        @if (@apiKey.Expires.HasValue)
+                        @if (apiKey.Expires.HasValue)
                         {
                             <text><br />Expires: <span class="s-localtime" data-utc="@apiKey.Expires.Value.ToJavaScriptUTC()">@apiKey.Expires.Value.ToNuGetShortDateString()</span></text>
+                        }
+
+                        @using (Html.BeginForm("RemoveCredential", "Users", FormMethod.Post, new { @class = "form-inline" }))
+                        {
+                            <fieldset class="form">
+                                <legend>Remove API key</legend>
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("credentialType", CredentialTypes.ApiKeyV1)
+                                <button class="btn btn-veryflat s-confirm" data-confirm="Are you sure you want to remove the API key?" type="submit">Remove API key</button>
+                            </fieldset>
                         }
                     </p>
                 }
 
+                <hr/>
+
                 using (Html.BeginForm("GenerateApiKey", "Users", FormMethod.Post, new { @class = "form-inline" }))
                 {
                     <fieldset class="form">
-                        <legend>@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</legend>
+                        <h4>@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</h4>
                         @Html.AntiForgeryToken()
-                        <button class="btn btn-inline" type="submit">@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</button>
-                    </fieldset>
-                }
 
-                if (apiKey != null)
-                {
-                    using (Html.BeginForm("RemoveCredential", "Users", FormMethod.Post, new { @class = "form-inline" }))
-                    {
-                        <fieldset class="form">
-                            <legend>Remove API key</legend>
-                            @Html.AntiForgeryToken()
-                            @Html.Hidden("credentialType", CredentialTypes.ApiKeyV1)
-                            <button class="btn btn-inline" type="submit">Remove API key</button>
-                        </fieldset>
-                    }
+                        @if (Model.ExpirationInDaysForApiKeyV1 > 0)
+                        {
+                            <text>Expires in:</text>
+                                <select name="expirationInDays" id="expirationInDays">
+                                    <option value="1">1 day</option>
+                                    @for (int i = 2; i <= Model.ExpirationInDaysForApiKeyV1; i++)
+                                    {
+                                        <option value="@i" @(i == Model.ExpirationInDaysForApiKeyV1 ? "selected" : string.Empty)>@i days</option>
+                                    }
+                                </select>
+                        }
+
+                        <button class="btn btn-veryflat s-confirm" data-confirm="Are you sure you want to generate a new API key? The old API key will be rendered invalid." type="submit">@(apiKey == null ? "Generate an API Key" : "Generate a new API Key")</button>
+                    </fieldset><br/>
                 }
 
                 if (apiKey != null && !apiKey.HasExpired)
                 {
+                    <hr/>
+
                     <h4>Example usage</h4>
                     <p>
                         The following snippet demonstrates how you can use the <a href="https://docs.nuget.org/Consume/Command-Line-Reference">NuGet</a>

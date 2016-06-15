@@ -389,4 +389,7 @@ The {2} Team</value>
   <data name="WarningApiKeyExpired" xml:space="preserve">
     <value>Your API key has expired. Visit {0} to generate a new API key.</value>
   </data>
+  <data name="NoCredentialToRemove" xml:space="preserve">
+    <value>No credential to remove.</value>
+  </data>
 </root>

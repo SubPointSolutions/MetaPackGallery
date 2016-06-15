@@ -1060,6 +1060,23 @@ a.btn {
     display: inline-block;
 }
 
+.btn.btn-veryflat {
+    display: inline-block;
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    font: inherit;
+    cursor: pointer;
+    color: #0071bc;
+    outline: none;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+    .btn.btn-veryflat:hover {
+        text-decoration: underline;
+    }
+
 a:hover.btn {
     color: white;
     text-decoration: none;

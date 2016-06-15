@@ -15,6 +15,7 @@ namespace NuGetGallery
         public IList<CredentialViewModel> Credentials { get; set; }
         public ChangePasswordViewModel ChangePassword { get; set; }
         public ChangeEmailViewModel ChangeEmail { get; set; }
+        public int ExpirationInDaysForApiKeyV1 { get; set; }
     }
 
     public class ChangeEmailViewModel
