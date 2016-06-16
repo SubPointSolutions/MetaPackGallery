@@ -1,12 +1,8 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace NuGetGallery.Auditing
 {
@@ -19,11 +15,17 @@ namespace NuGetGallery.Auditing
         public CredentialAuditRecord[] Credentials { get; set; }
         public CredentialAuditRecord[] AffectedCredential { get; set; }
         public string AffectedEmailAddress { get; set; }
-        
+
         public UserAuditRecord(User user, UserAuditAction action)
-            : this(user, action, Enumerable.Empty<Credential>()) { }
+            : this(user, action, Enumerable.Empty<Credential>())
+        {
+        }
+
         public UserAuditRecord(User user, UserAuditAction action, Credential affected)
-            : this(user, action, SingleEnumerable(affected)) { }
+            : this(user, action, SingleEnumerable(affected))
+        {
+        }
+
         public UserAuditRecord(User user, UserAuditAction action, IEnumerable<Credential> affected)
             : base(action)
         {
@@ -42,7 +44,8 @@ namespace NuGetGallery.Auditing
         }
         
         public UserAuditRecord(User user, UserAuditAction action, string affectedEmailAddress)
-            : this(user, action, Enumerable.Empty<Credential>()) {
+            : this(user, action, Enumerable.Empty<Credential>())
+        {
             AffectedEmailAddress = affectedEmailAddress;
         }
         
@@ -55,35 +58,5 @@ namespace NuGetGallery.Auditing
         {
             yield return affected;
         }
-    }
-
-    public class CredentialAuditRecord
-    {
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string Identity { get; set; }
-
-        public CredentialAuditRecord(Credential credential, bool removed)
-        {
-            Type = credential.Type;
-            Identity = credential.Identity;
-
-            // Track the value for credentials that are definitely revokable (API Key, etc.) and have been removed
-            if (removed && !CredentialTypes.IsPassword(credential.Type))
-            {
-                Value = credential.Value;
-            }
-        }
-    }
-
-    public enum UserAuditAction
-    {
-        Registered,
-        AddedCredential,
-        RemovedCredential,
-        RequestedPasswordReset,
-        ChangeEmail,
-        CancelChangeEmail,
-        ConfirmEmail,
     }
 }

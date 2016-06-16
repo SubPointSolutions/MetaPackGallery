@@ -3,11 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using NuGet.Versioning;
@@ -223,38 +220,7 @@ namespace NuGetGallery
 
         protected virtual PackageAuditRecord CreateAuditRecord(Package package, PackageRegistration packageRegistration, PackageAuditAction action, string reason)
         {
-            return new PackageAuditRecord(package, ConvertToDataTable(package), ConvertToDataTable(packageRegistration), action, reason);
-        }
-
-        public static DataTable ConvertToDataTable<T>(T instance)
-        {
-            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
-            DataTable table = new DataTable() { Locale = CultureInfo.CurrentCulture };
-
-            List<object> values = new List<object>();
-            for (int i = 0; i < properties.Count; i++)
-            {
-                var propertyDescriptor = properties[i];
-                var propertyType = Nullable.GetUnderlyingType(propertyDescriptor.PropertyType) ?? propertyDescriptor.PropertyType;
-                if (!IsComplexType(propertyType))
-                {
-                    table.Columns.Add(propertyDescriptor.Name, propertyType);
-                    values.Add(propertyDescriptor.GetValue(instance) ?? DBNull.Value);
-                }
-            }
-
-            table.Rows.Add(values.ToArray());
-
-            return table;
-        }
-
-        public static bool IsComplexType(Type type)
-        {
-            if (type.IsSubclassOf(typeof (ValueType)) || type == typeof (string))
-            {
-                return false;
-            }
-            return true;
+            return new PackageAuditRecord(package, action, reason);
         }
     }
 }

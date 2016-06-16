@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Versioning;
+using NuGetGallery.Auditing;
 using NuGetGallery.Packaging;
 
 namespace NuGetGallery
@@ -20,19 +21,22 @@ namespace NuGetGallery
         private readonly IEntityRepository<PackageRegistration> _packageRegistrationRepository;
         private readonly IEntityRepository<Package> _packageRepository;
         private readonly IPackageNamingConflictValidator _packageNamingConflictValidator;
+        private readonly AuditingService _auditingService;
 
         public PackageService(
             IEntityRepository<PackageRegistration> packageRegistrationRepository,
             IEntityRepository<Package> packageRepository,
             IEntityRepository<PackageOwnerRequest> packageOwnerRequestRepository,
             IIndexingService indexingService,
-            IPackageNamingConflictValidator packageNamingConflictValidator)
+            IPackageNamingConflictValidator packageNamingConflictValidator,
+            AuditingService auditingService)
         {
             _packageRegistrationRepository = packageRegistrationRepository;
             _packageRepository = packageRepository;
             _packageOwnerRequestRepository = packageOwnerRequestRepository;
             _indexingService = indexingService;
             _packageNamingConflictValidator = packageNamingConflictValidator;
+            _auditingService = auditingService;
         }
 
         public void EnsureValid(PackageArchiveReader packageArchiveReader)
@@ -244,6 +248,8 @@ namespace NuGetGallery
                 _packageOwnerRequestRepository.DeleteOnCommit(request);
                 await _packageOwnerRequestRepository.CommitChangesAsync();
             }
+            
+            await _auditingService.SaveAuditRecord(new PackageAuditRecord(package, PackageAuditAction.AddOwner, $"Added owner: {user.Username}"));
         }
 
         public async Task RemovePackageOwnerAsync(PackageRegistration package, User user)
@@ -263,6 +269,8 @@ namespace NuGetGallery
 
             package.Owners.Remove(user);
             await _packageRepository.CommitChangesAsync();
+
+            await _auditingService.SaveAuditRecord(new PackageAuditRecord(package, PackageAuditAction.RemoveOwner, $"Removed owner: {user.Username}"));
         }
 
         public async Task MarkPackageListedAsync(Package package, bool commitChanges = true)
@@ -291,6 +299,8 @@ namespace NuGetGallery
             package.LastEdited = DateTime.UtcNow;
 
             await UpdateIsLatestAsync(package.PackageRegistration, false);
+            
+            await _auditingService.SaveAuditRecord(new PackageAuditRecord(package, PackageAuditAction.Listed));
 
             if (commitChanges)
             {
@@ -317,6 +327,8 @@ namespace NuGetGallery
             {
                 await UpdateIsLatestAsync(package.PackageRegistration, false);
             }
+
+            await _auditingService.SaveAuditRecord(new PackageAuditRecord(package, PackageAuditAction.Unlisted));
 
             if (commitChanges)
             {

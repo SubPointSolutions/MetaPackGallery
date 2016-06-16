@@ -217,10 +217,10 @@ namespace NuGetGallery.Authentication
             }
         }
 
-        public class TheCreateSessionMethod : TestContainer
+        public class TheCreateSessionAsyncMethod : TestContainer
         {
             [Fact]
-            public void GivenAUser_ItCreatesAnOwinAuthenticationTicketForTheUser()
+            public async Task GivenAUser_ItCreatesAnOwinAuthenticationTicketForTheUser()
             {
                 // Arrange
                 var service = Get<AuthenticationService>();
@@ -232,7 +232,7 @@ namespace NuGetGallery.Authentication
                 var authUser = new AuthenticatedUser(Fakes.Admin, passwordCred);
 
                 // Act
-                service.CreateSession(context, authUser.User);
+                await service.CreateSessionAsync(context, authUser);
 
                 // Assert
                 var principal = context.Authentication.AuthenticationResponseGrant.Principal;
@@ -243,6 +243,28 @@ namespace NuGetGallery.Authentication
                 Assert.Equal(Fakes.Admin.Username, principal.GetClaimOrDefault(ClaimTypes.NameIdentifier));
                 Assert.Equal(AuthenticationTypes.LocalUser, id.AuthenticationType);
                 Assert.True(principal.IsInRole(Constants.AdminRoleName));
+            }
+
+            [Fact]
+            public async Task WritesAnAuditRecord()
+            {
+                // Arrange
+                var service = Get<AuthenticationService>();
+                var context = Fakes.CreateOwinContext();
+
+                var credential = Fakes.Admin.Credentials.SingleOrDefault(
+                    c => String.Equals(c.Type, CredentialTypes.Password.Pbkdf2, StringComparison.OrdinalIgnoreCase));
+
+                var authenticatedUser = new AuthenticatedUser(Fakes.Admin, credential);
+
+                // Act
+                await service.CreateSessionAsync(context, authenticatedUser);
+
+                // Assert
+                var authenticationService = Get<AuthenticationService>();
+                Assert.True(authenticationService.Auditing.WroteRecord<UserAuditRecord>(ar =>
+                    ar.Action == UserAuditAction.Login &&
+                    ar.Username == Fakes.Admin.Username));
             }
         }
 

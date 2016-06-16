@@ -106,14 +106,17 @@ namespace NuGetGallery.Authentication
             }
         }
 
-        public virtual void CreateSession(IOwinContext owinContext, User user)
+        public virtual async Task CreateSessionAsync(IOwinContext owinContext, AuthenticatedUser user)
         {
             // Create a claims identity for the session
-            ClaimsIdentity identity = CreateIdentity(user, AuthenticationTypes.LocalUser);
+            ClaimsIdentity identity = CreateIdentity(user.User, AuthenticationTypes.LocalUser);
 
             // Issue the session token and clean up the external token if present
             owinContext.Authentication.SignIn(identity);
             owinContext.Authentication.SignOut(AuthenticationTypes.External);
+            
+            // Write an audit record
+            await Auditing.SaveAuditRecord(new UserAuditRecord(user.User, UserAuditAction.Login, user.CredentialUsed));
         }
 
         public virtual async Task<AuthenticatedUser> Register(string username, string emailAddress, Credential credential)
