@@ -3,14 +3,9 @@
 
 namespace NuGetGallery.Auditing
 {
-    public enum PackageAuditAction
+    public enum PackageRegistrationAuditAction
     {
-        Deleted,
-        SoftDeleted,
-        Created,
-        Listed,
-        Unlisted,
-        Edit,
-        UndoEdit
+        AddOwner,
+        RemoveOwner
     }
 }

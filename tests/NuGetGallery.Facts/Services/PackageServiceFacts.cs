@@ -180,8 +180,8 @@ namespace NuGetGallery
                 await service.AddPackageOwnerAsync(package, pendingOwner);
 
                 // Assert
-                Assert.True(auditingService.WroteRecord<PackageAuditRecord>(ar =>
-                    ar.Action == PackageAuditAction.AddOwner
+                Assert.True(auditingService.WroteRecord<PackageRegistrationAuditRecord>(ar =>
+                    ar.Action == PackageRegistrationAuditAction.AddOwner
                     && ar.Id == package.Id));
             }
         }
@@ -1907,8 +1907,8 @@ namespace NuGetGallery
                 await service.RemovePackageOwnerAsync(package, ownerToRemove);
 
                 // Assert
-                Assert.True(auditingService.WroteRecord<PackageAuditRecord>(ar =>
-                    ar.Action == PackageAuditAction.RemoveOwner
+                Assert.True(auditingService.WroteRecord<PackageRegistrationAuditRecord>(ar =>
+                    ar.Action == PackageRegistrationAuditAction.RemoveOwner
                     && ar.Id == package.Id));
             }
         }
