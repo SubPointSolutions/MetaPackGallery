@@ -33,9 +33,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Services.Search.Client", "src\NuGet.Services.Search.Client\NuGet.Services.Search.Client.csproj", "{6931C2EE-E081-4518-9798-D34D83B35BF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7BC92E41-79ED-40D6-9950-5D6538A85437}"
-	ProjectSection(SolutionItems) = preProject
-		.deployment = .deployment
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,36 +1,45 @@
-﻿<ul class="recommended metapack">
+﻿<ul class="recommended">
     <li>
-        <a href="@Href("~/policies/Contact")">Contact Us111222</a>
-        <p>Got questions about NuGet or the NuGet Gallery?</p>
+        <a href="https://www.yammer.com/spmeta2feedback" target="_blank">Contact and support</a>
+        <p>Got questions about MetPack or the MetaPack Gallery?</p>
     </li>
     <li>
-        <a href="https://docs.nuget.org/docs/start-here/overview">Overview</a>
-        <p>NuGet is a Visual Studio extension that makes it easy to add, remove, and update libraries and...</p>
+        <a href="http://subpointsolutions.com/">SubPoint Solutions</a>
+        <p>
+            Enhancing your SharePoint experience with excellent APIs, products, and services.
+        </p>
     </li>
     <li>
-        <a href="https://docs.nuget.org/docs/start-here/installing-nuget">Install</a>
-        <p>NuGet can be installed and updated using the Visual Studio Extension Manager. To check if your copy...</p>
+        <a href="http://subpointsolutions.com/metapack/">MetaPack</a>
+        <p>NuGet based package manager for SPMeta2 based SharePoint customizations.</p>
     </li>
     <li>
-        <a href="https://docs.nuget.org/docs/start-here/videos">Videos</a>
-        <p>Watch screencasts and presentations about anything and everything NuGet.</p>
+        <a href="http://subpointsolutions.com/metapack/">MetaPack API</a>
+        <p>API for packaging, versioning, deploying and updating SPMeta2 customizations.</p>
     </li>
     <li>
-        <a href="https://docs.nuget.org/docs/start-here/nuget-faq">FAQ</a>
-        <p>Read the Frequently Asked Questions about NuGet and see if your question made the list.</p>
+        <a href="http://docs.nuget.org/">NuGet Gallery</a>
+        <p>NuGet is the package manager for the Microsoft development platform including .NET.</p>
     </li>
 </ul>
-<div class="license metapack">
-    <a title=".NET Foundation" href="https://www.dotnetfoundation.org"><img src="@Href("~/Content/Logos/dnf.png")" alt=".NET Foundation" /></a>
-    <p>
-        &copy; @DateTime.UtcNow.Year .NET Foundation -
-        <a href="@Url.Action("Terms", "Pages")">Terms of Use</a> -
-        <a href="@Url.Action("Privacy", "Pages")">Privacy Policy</a> -
-        <a href="@Url.Action("About", "Pages")">About the Gallery</a> -
-        <a href="https://status.nuget.org">Service status</a>
+<div class="license">
+    <div>
+        <a title=".NET Foundation" href="https://www.dotnetfoundation.org"><img src="@Href("~/Content/Logos/dnf.png")" alt=".NET Foundation" /></a>
+        <p>
+            &copy; @DateTime.UtcNow.Year .NET Foundation
+        </p>
+    </div>
+
+    <div>
+        <a title="SubPoint Solutions" href="http://subpointsolutions.com/" target="_blank">
+            <img class="metapack-subpoint-logo" src="@Url.Content("~/branding/content/subpointsolutions_logo.png")" alt="SubPoint Solutions" />
+        </a>
+        <p>
+            &copy; @DateTime.UtcNow.Year SubPoint Solutions
+        </p>
+    </div>
+    <p id="releaseTag">
+        This is the MetaPack Gallery.
     </p>
-    <p>
-        Deployed using <a href="http://octopusdeploy.com/" target="referral">Octopus Deploy</a> | Uses <a href="http://fontawesome.io" target="referral">Font Awesome</a> by Dave Gandy
-    </p>
-    @ViewHelpers.ReleaseTag()
+    @*@ViewHelpers.ReleaseTag()*@
 </div>

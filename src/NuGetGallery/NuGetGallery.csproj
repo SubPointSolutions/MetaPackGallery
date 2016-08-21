@@ -83,6 +83,7 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <PublishDatabases>false</PublishDatabases>
     <IncludeIisSettings>false</IncludeIisSettings>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -1314,9 +1315,12 @@
     </Content>
     <Content Include="Areas\Admin\DynamicData\FieldTemplates\Url_Edit.ascx" />
     <Content Include="Areas\Admin\DynamicData\PageTemplates\ListDetails.aspx" />
+    <Content Include="Branding\Content\favicon.ico" />
     <Content Include="Branding\Content\Layout.css" />
+    <Content Include="Branding\Content\metapack-gui-beta.png" />
     <Content Include="Branding\Content\PageStylings.css" />
     <Content Include="Branding\Content\Site.css" />
+    <Content Include="Branding\Content\subpointsolutions_logo.png" />
     <Content Include="Content\admin\SupportRequestStyles.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -1549,12 +1553,15 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Branding\Views\Shared\SiteMenu.cshtml" />
+    <Content Include="Branding\Views\Shared\Layout.cshtml" />
     <None Include="Branding\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Branding\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Properties\PublishProfiles\metapack-dev - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\metapack-prod - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />

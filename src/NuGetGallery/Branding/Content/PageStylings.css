@@ -1,3 +1,15 @@
-.metapack-pagestylings {
-    color:aqua;
+.featured {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background-color: inherit;
+    border: none;
+    border-radius: 3px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.info img {
+    width:650px;
+    max-width:650px;
+    padding-left:10px;
 }
