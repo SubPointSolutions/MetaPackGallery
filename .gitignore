@@ -174,3 +174,12 @@ src/NuGetGallery.Cloud/ecf/
 
 # Vs2015
 .vs/config/applicationhost.config
+/CakeBuild/build-artifact-webdeploy/NuGetGallery
+/CakeBuild/tools/Addins
+/CakeBuild/tools/SubPointSolutions.CakeBuildTools
+/CakeBuild/tools/RazorEngine
+/CakeBuild/tools/Octokit
+/CakeBuild/tools/Microsoft.Net.Http
+/CakeBuild/tools/Microsoft.AspNet.Razor
+/CakeBuild/tools/Cake
+/src/NuGetGallery/build-artifact-webdeploy

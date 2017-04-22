@@ -1,0 +1,42 @@
+﻿{
+  "defaultSolutionDirectory": "./../",
+  "defaultSolutionFilePath": "./../NuGetGallery.sln",
+  "defaultNuGetPackagesDirectory": "./build-artifact-nuget-packages",
+  "defaultChocolateyPackagesDirectory": "./build-artifact-cli-packages",
+  "defaultNuspecVersion": "0.1.0",
+
+  "defaultDocsBuildEnabled": false,
+  "defaultDocsViewFolder": "SubPointSolutions.Docs/Views/metapack-gallery",
+  "defaultDocsSampleFilesFolder": "SubPointSolutions.Docs/SampleFiles",
+  "defaultDocsRepoFolder": "m2-mpg",
+  "defaultDocsBranch": "wyam-dev",
+  "defaultDocsFileExtensions": [
+    "*.md",
+    "*.cs",
+    "*.cshtml",
+    "*.xml"
+  ],
+
+  "defaultTestCategories": [
+    "CI.Core",
+    "CI.Docs"
+  ],
+  "customNuspecs": [
+
+  ],
+  "customChocolateySpecs": [
+
+  ],
+
+  "defaultWebDeploySettings": [
+    {
+      "SolutionRelativeProjectFilePath": "src/NuGetGallery/NuGetGallery.csproj"
+    }
+  ],
+
+  "defaultTestAssemblyPaths": [
+
+  ],
+  "defaultBuildDirs": [ ],
+  "defaultEnvironmentVariables": [ ]
+}
