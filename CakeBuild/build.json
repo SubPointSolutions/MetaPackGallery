@@ -3,7 +3,7 @@
   "defaultSolutionFilePath": "./../NuGetGallery.sln",
   "defaultNuGetPackagesDirectory": "./build-artifact-nuget-packages",
   "defaultChocolateyPackagesDirectory": "./build-artifact-cli-packages",
-  "defaultNuspecVersion": "0.1.0",
+  "defaultNuspecVersion": "0.1.0-beta1",
 
   "defaultDocsBuildEnabled": false,
   "defaultDocsViewFolder": "SubPointSolutions.Docs/Views/metapack-gallery",
