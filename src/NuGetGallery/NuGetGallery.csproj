@@ -5,6 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputPath>bin\</OutputPath>
     <ProductVersion>
     </ProductVersion>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
@@ -83,6 +84,7 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <PublishDatabases>false</PublishDatabases>
     <IncludeIisSettings>false</IncludeIisSettings>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -1327,6 +1329,12 @@
     </Content>
     <Content Include="Areas\Admin\DynamicData\FieldTemplates\Url_Edit.ascx" />
     <Content Include="Areas\Admin\DynamicData\PageTemplates\ListDetails.aspx" />
+    <Content Include="Branding\Content\favicon.ico" />
+    <Content Include="Branding\Content\Layout.css" />
+    <Content Include="Branding\Content\metapack-gui-beta.png" />
+    <Content Include="Branding\Content\PageStylings.css" />
+    <Content Include="Branding\Content\Site.css" />
+    <Content Include="Branding\Content\subpointsolutions_logo.png" />
     <Content Include="Content\admin\SupportRequestStyles.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -1545,13 +1553,29 @@
     <Content Include="Branding\Views\_ViewStart.cshtml" />
     <Content Include="App_Data\Files\Content\Privacy-Policy.md" />
     <Content Include="App_Data\Files\Content\Terms-Of-Use.md" />
-    <Content Include="Branding\Views\web.config" />
+    <Content Include="Branding\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Compile Include="Views\NuGetViewBase.cs" />
     <Content Include="Public\Blocked.html" />
     <Content Include="Scripts\d3.v3.js" />
     <Content Include="Scripts\d3.v3.min.js" />
     <Content Include="Areas\Admin\Views\SupportRequest\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SupportRequest\Admins.cshtml" />
+    <Content Include="Branding\Views\Shared\LayoutFooter.cshtml" />
+    <Content Include="Branding\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Branding\Views\Shared\SiteMenu.cshtml" />
+    <Content Include="Branding\Views\Shared\Layout.cshtml" />
+    <None Include="Branding\Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Branding\Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Properties\PublishProfiles\metapack-dev - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\metapack-prod - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
@@ -1900,6 +1924,8 @@
           <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://nuget.localtest.me</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://nuget.localtest.me/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

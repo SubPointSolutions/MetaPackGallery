@@ -1,0 +1,45 @@
+﻿<ul class="recommended">
+    <li>
+        <a href="https://www.yammer.com/spmeta2feedback" target="_blank">Contact and support</a>
+        <p>Got questions about MetPack or the MetaPack Gallery?</p>
+    </li>
+    <li>
+        <a href="http://subpointsolutions.com/">SubPoint Solutions</a>
+        <p>
+            Enhancing your SharePoint experience with excellent APIs, products, and services.
+        </p>
+    </li>
+    <li>
+        <a href="http://subpointsolutions.com/metapack/">MetaPack</a>
+        <p>NuGet based package manager for SPMeta2 based SharePoint customizations.</p>
+    </li>
+    <li>
+        <a href="http://subpointsolutions.com/metapack/">MetaPack API</a>
+        <p>API for packaging, versioning, deploying and updating SPMeta2 customizations.</p>
+    </li>
+    <li>
+        <a href="http://docs.nuget.org/">NuGet Gallery</a>
+        <p>NuGet is the package manager for the Microsoft development platform including .NET.</p>
+    </li>
+</ul>
+<div class="license">
+    <div>
+        <a title=".NET Foundation" href="https://www.dotnetfoundation.org"><img src="@Href("~/Content/Logos/dnf.png")" alt=".NET Foundation" /></a>
+        <p>
+            &copy; @DateTime.UtcNow.Year .NET Foundation
+        </p>
+    </div>
+
+    <div>
+        <a title="SubPoint Solutions" href="http://subpointsolutions.com/" target="_blank">
+            <img class="metapack-subpoint-logo" src="@Url.Content("~/branding/content/subpointsolutions_logo.png")" alt="SubPoint Solutions" />
+        </a>
+        <p>
+            &copy; @DateTime.UtcNow.Year SubPoint Solutions
+        </p>
+    </div>
+    <p id="releaseTag">
+        This is the MetaPack Gallery. Last deployed @DateTime.UtcNow
+    </p>
+    @*@ViewHelpers.ReleaseTag()*@
+</div>

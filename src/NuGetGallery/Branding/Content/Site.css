@@ -1,0 +1,113 @@
+.metapack-cnt-header {
+    background-color: #2980b9;
+}
+
+.metapack-cnt-header {
+    background-color: rgba(50,58,69,0.95);
+    /*background-image: linear-gradient(rgba(255,255,255,0.1) 2px, transparent 0px), linear-gradient(90deg, rgba(255,255,255,0.1) 2px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 0.5px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 0.5px);
+    background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;*/
+}
+
+
+    .metapack-cnt-header .main {
+        margin: 0 auto;
+        min-width: 960px;
+        width: 960px;
+    }
+
+.metapack-cnt-nav {
+    background-color: rgba(50,58,69,0.95);
+    background-color:#2980b9;
+
+    /*background-image: linear-gradient(rgba(255,255,255,0.1) 2px, transparent 0px), linear-gradient(90deg, rgba(255,255,255,0.1) 2px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 0.5px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 0.5px);
+    background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;*/
+}
+
+    .metapack-cnt-nav .main {
+        margin: 0 auto;
+        min-width: 960px;
+        width: 960px;
+    }
+
+
+.user-display {
+    margin-top: 0px;
+}
+
+#layout-footer {
+    background-color: #323a45;
+    color: #ced3d8;
+    /*background-image: linear-gradient(rgba(255,255,255,0.1) 2px, transparent 0px), linear-gradient(90deg, rgba(255,255,255,0.1) 2px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 0.5px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 0.5px);
+    background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;*/
+}
+
+    #layout-footer a {
+        color: #ffffff !important;
+    }
+
+#outer-wrapper {
+    background: none;
+}
+
+#searchBoxInput {
+    width: 450px;
+    border: 0px;
+    color: #333;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+    padding: 0;
+}
+
+#searchBox {
+    background-color: #fff;
+    border: solid 1px #05005F;
+    height: 32px;
+    margin-top: 1px;
+    width: 490px;
+    padding-left: 5px;
+    padding-right: 4px;
+    padding-top: 1px;
+    vertical-align: top;
+}
+
+#header-sidebox {
+    float: right;
+    margin-top: 40px;
+    width: 500px;
+}
+
+#logo {
+    float: left;
+    padding: 20px 20px 0 0;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 67px;
+}
+
+.metapack-subpoint-logo {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 44px;
+}
+
+.license div {
+    display: inline-block;
+    padding: 0;
+    margin: 0 1em;
+}
+
+#footer {
+    padding-top: 3px;
+}
+nav.main ul a {
+    -moz-border-radius: 0px 0px 0 0;
+    -webkit-border-radius: 0px 0px 0 0;
+    border-radius: 0px 0px 0px 0px;
+}
